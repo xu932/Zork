@@ -15,7 +15,7 @@ private:
     std::unordered_set<std::string> accepts;
 public:
     Container(rapidxml::xml_node<>* root, std::vector<std::string>& items);
-    ~Container();
+    virtual ~Container();
 };
 
 
