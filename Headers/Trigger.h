@@ -13,17 +13,29 @@
 #include "rapidxml.hpp"
 #include "GameObject.h"
 
-enum DURATION {
-    Permanent,
-    Single
+class Condition {
+private:
+    bool initialzed;
+    std::unordered_map<std::string, std::string> attr;
+    std::shared_ptr<GameObject> owner;
+    std::shared_ptr<GameObject> object;
+public:
+    Condition(rapidxml::xml_node<>* root);
+    virtual ~Condition();
+
+    void setOwner(std::shared_ptr<GameObject> own);
+    void setObject(std::shared_ptr<GameObject> obj);
+    std::string getInfo(std::string key);
+    bool checkConiditon();
 };
+
+
 
 class Trigger {
 private:
-    std::vector<std::unordered_map<std::string, std::string>> conditions;
+    std::vector<std::shared_ptr<Condition>> conditions;
     std::unordered_map<std::string, std::string> attr;
 public:
-    DURATION dur;
     bool hasTriggered;
 
     std::vector<std::string> actions;

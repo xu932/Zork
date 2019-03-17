@@ -4,16 +4,40 @@
 
 #include "../Headers/Trigger.h"
 
-Trigger::Trigger(rapidxml::xml_node<> *root) : dur(Single), hasTriggered(false) {
+Condition::Condition(rapidxml::xml_node<> *root) : initialzed(false), owner(nullptr), object(nullptr) {
+    for (auto node = root->first_node(); node; node = node->next_sibling()) {
+        attr[std::string(node->name())] = std::string(node->value());
+    }
+}
+
+Condition::~Condition() {}
+
+std::string Condition::getInfo(std::string key) {
+    if (attr.find(key) == attr.end())
+        return "[ERROR]";
+    return attr[key];
+}
+
+void Condition::setOwner(std::shared_ptr<GameObject> own) {
+    owner = own;
+}
+
+void Condition::setObject(std::shared_ptr<GameObject> obj) {
+    initialzed = true;
+    object = obj;
+}
+
+bool Condition::checkConiditon() {
+    return false;
+}
+
+Trigger::Trigger(rapidxml::xml_node<> *root) : hasTriggered(false) {
+    attr["type"] = "single";
+    attr["command"] = "";
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
         std::string name(node->name());
-        if (name == "type") {
-            if (std::string(node->value()) == "permanent")
-                dur = Permanent;
-        } else if (name == "condition") {
-            std::unordered_map<std::string, std::string> cond;
-            for (auto n = node->first_node(); n; n = n->next_sibling())
-                cond[std::string(n->name())] = std::string(n->value());
+        if (name == "condition") {
+            std::shared_ptr<Condition> cond = std::make_shared<Condition>(node);
             conditions.push_back(cond);
         } else if (name == "action") {
             actions.push_back(std::string(node->value()));
