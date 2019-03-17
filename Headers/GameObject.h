@@ -16,7 +16,8 @@ class Trigger;
 enum Type {
     ITEM,
     CONTAINER,
-    CREATURE
+    CREATURE,
+    ROOM
 };
 
 class GameObject {
