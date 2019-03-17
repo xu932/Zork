@@ -7,6 +7,7 @@
 
 #include "Headers/rapidxml.hpp"
 #include "Headers/rapidxml_utils.hpp"
+#include "Headers/Map.h"
 
 std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>> extractElements(rapidxml::xml_node<>* root) {
     std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>> elements;
@@ -32,5 +33,8 @@ int main(int argc, char ** argv) {
 
     auto elements = extractElements(doc.first_node());
 
+    Map *map = new Map(elements);
+
+    delete map;
     return EXIT_SUCCESS;
 }

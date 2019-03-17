@@ -1,7 +1,8 @@
 G++ = g++ -std=c++17 -Wvla -Wall --pedantic
 VALGRIND = valgrind --tool=memcheck --leak-check=full --track-origins=yes
-
-SRCS = main.cpp
+Objects = Objects/Trigger.cpp Objects/GameObject.cpp Objects/Item.cpp Objects/Creature.cpp Objects/Container.cpp Objects/Room.cpp 
+GamePlay = GamePlay/Attack.cpp GamePlay/Map.cpp 
+SRCS = main.cpp $(Objects) $(GamePlay) 
 OBJS = $(SRCS:%.cpp=%.o)
 
 EXEC = proj1
