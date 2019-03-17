@@ -15,7 +15,6 @@
 
 class Condition {
 private:
-    bool initialzed;
     std::unordered_map<std::string, std::string> attr;
     std::shared_ptr<GameObject> owner;
     std::shared_ptr<GameObject> object;
@@ -37,12 +36,17 @@ private:
     std::unordered_map<std::string, std::string> attr;
 public:
     bool hasTriggered;
+    bool hasInitialized;
 
     std::vector<std::string> actions;
     std::vector<std::string> prints;
 
     Trigger(rapidxml::xml_node<> *root);
     virtual ~Trigger();
+
+    virtual void initTrigger(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                      std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                      std::shared_ptr<GameObject> inventory);
 
     virtual void fire();
 

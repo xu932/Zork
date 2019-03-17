@@ -4,7 +4,7 @@
 
 #include "../Headers/Trigger.h"
 
-Condition::Condition(rapidxml::xml_node<> *root) : initialzed(false), owner(nullptr), object(nullptr) {
+Condition::Condition(rapidxml::xml_node<> *root) : owner(nullptr), object(nullptr) {
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
         attr[std::string(node->name())] = std::string(node->value());
     }
@@ -23,7 +23,6 @@ void Condition::setOwner(std::shared_ptr<GameObject> own) {
 }
 
 void Condition::setObject(std::shared_ptr<GameObject> obj) {
-    initialzed = true;
     object = obj;
 }
 
@@ -31,7 +30,7 @@ bool Condition::checkConiditon() {
     return false;
 }
 
-Trigger::Trigger(rapidxml::xml_node<> *root) : hasTriggered(false) {
+Trigger::Trigger(rapidxml::xml_node<> *root) : hasTriggered(false), hasInitialized(false) {
     attr["type"] = "single";
     attr["command"] = "";
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
@@ -50,6 +49,21 @@ Trigger::Trigger(rapidxml::xml_node<> *root) : hasTriggered(false) {
 }
 
 Trigger::~Trigger() {}
+
+
+void Trigger::initTrigger(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                  std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                  std::shared_ptr<GameObject> inventory) {
+    hasInitialized = true;
+    for (auto i : conditions) {
+        i->setObject(items[i->getInfo("object")]);
+        auto owner = i->getInfo("owner");
+        if (owner == "inventory")
+            i->setOwner(inventory);
+        else if (owner != "[ERROR]")
+            i->setOwner(containers[owner]);
+    }
+}
 
 void Trigger::fire() {
 
