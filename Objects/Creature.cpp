@@ -25,4 +25,13 @@ Creature::~Creature() {
         delete attack;
 }
 
+void Creature::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                        std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                        std::shared_ptr<GameObject> inventory) {
+    for (auto i : triggers) {
+        if (!(i->hasInitialized))
+            i->initTrigger(items, containers, inventory);
+    }
+}
+
 

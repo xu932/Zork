@@ -6,6 +6,8 @@
 #define ZORK_ROOM_H
 
 #include "Trigger.h"
+#include "Item.h"
+#include "Container.h"
 #include "rapidxml.hpp"
 
 class Room : public GameObject {
@@ -15,8 +17,14 @@ private:
 
     void addBorder(rapidxml::xml_node<>* root);
 public:
-    Room(rapidxml::xml_node<>* root, std::vector<std::string>& everything);
+    Room(rapidxml::xml_node<>* root, std::unordered_map<std::string, std::vector<std::string>>& everything);
     virtual ~Room();
+
+    virtual void initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                              std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                              std::shared_ptr<GameObject> inventory);
+
+    void init();
 };
 
 

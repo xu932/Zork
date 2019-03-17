@@ -11,12 +11,14 @@ void Room::addBorder(rapidxml::xml_node<> *root) {
     n_border++;
 }
 
-Room::Room(rapidxml::xml_node<> *root, std::vector<std::string>& everything) : GameObject(ROOM), n_border(0) {
-
+Room::Room(rapidxml::xml_node<> *root, std::unordered_map<std::string, std::vector<std::string>>& everything) : GameObject(ROOM), n_border(0) {
+    everything["item"] = std::vector<std::string>();
+    everything["creature"] = std::vector<std::string>();
+    everything["container"] = std::vector<std::string>();
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
         std::string name(node->name());
         if (name == "item" || name == "container" || name == "creature") {
-            everything.push_back(std::string(node->value()));
+            everything[name].push_back(std::string(node->value()));
         } else if (name == "trigger") {
             std::shared_ptr<Trigger> trig = std::make_shared<Trigger>(node);
             this->addTrigger(trig);
@@ -29,3 +31,17 @@ Room::Room(rapidxml::xml_node<> *root, std::vector<std::string>& everything) : G
 }
 
 Room::~Room() {}
+
+void Room::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                        std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                        std::shared_ptr<GameObject> inventory) {
+    for (auto i : triggers) {
+        if (!(i->hasInitialized))
+            i->initTrigger(items, containers, inventory);
+    }
+}
+
+void Room::init() {
+    std::string description = this->getInfo("description");
+    std::cout << description << std::endl;
+}

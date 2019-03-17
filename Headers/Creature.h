@@ -20,6 +20,9 @@ public:
     Creature(rapidxml::xml_node<>* root);
     virtual ~Creature();
 
+    virtual void initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                              std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                              std::shared_ptr<GameObject> inventory);
 
 };
 

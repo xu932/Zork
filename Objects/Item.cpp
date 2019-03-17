@@ -27,6 +27,15 @@ Item::Item(rapidxml::xml_node<>* root) : GameObject(ITEM) {
     }
 }
 
+void Item::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                        std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                        std::shared_ptr<GameObject> inventory) {
+    for (auto i : triggers) {
+        if (!(i->hasInitialized))
+            i->initTrigger(items, containers, inventory);
+    }
+}
+
 Item::~Item() {}
 
 
