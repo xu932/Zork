@@ -5,18 +5,19 @@
 #ifndef ZORK_ITEM_H
 #define ZORK_ITEM_H
 
-#include "GameObject.h"
+#include "Trigger.h"
 #include "rapidxml.hpp"
 
 class Item : public GameObject{
 private:
     std::unordered_map<std::string, std::vector<std::string>> turn_on;
 
+    virtual void addTurnOn(rapidxml::xml_node<>* root);
+
 public:
-    Item();
+    Item(rapidxml::xml_node<>* root);
     virtual ~Item();
 
-    virtual void addTurnOn(rapidxml::xml_node<>* root);
     void turnon();
 };
 

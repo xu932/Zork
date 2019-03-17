@@ -4,10 +4,6 @@
 
 #include "../Headers/Item.h"
 
-Item::Item() : GameObject(ITEM) {}
-
-Item::~Item() {}
-
 void Item::addTurnOn(rapidxml::xml_node<> *root) {
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
         std::string name(node->name());
@@ -16,5 +12,21 @@ void Item::addTurnOn(rapidxml::xml_node<> *root) {
         turn_on[name].push_back(std::string(node->value()));
     }
 }
+
+Item::Item(rapidxml::xml_node<>* root) : GameObject(ITEM) {
+    for (auto node = root->first_node(); node; node = node->next_sibling()) {
+        std::string name(node->name());
+        if (name == "turnon") {
+            this->addTurnOn(node);
+        } else if (name == "trigger") {
+            std::shared_ptr<Trigger> trig = std::make_shared<Trigger>(node);
+            this->addTrigger(trig);
+        } else {
+            this->addInfo(name, std::string(node->value()));
+        }
+    }
+}
+
+Item::~Item() {}
 
 
