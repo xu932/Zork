@@ -34,4 +34,11 @@ void Creature::initTriggers(std::unordered_map<std::string, std::shared_ptr<Game
     }
 }
 
+std::shared_ptr<Trigger> Creature::checkTrigger(std::string cmd) {
+    for (auto i : triggers) {
+        if (i->checkTrigger(cmd))
+            return i;
+    }
+    return nullptr;
+}
 

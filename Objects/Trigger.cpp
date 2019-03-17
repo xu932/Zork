@@ -26,8 +26,18 @@ void Condition::setObject(std::shared_ptr<GameObject> obj) {
     object = obj;
 }
 
-bool Condition::checkConiditon() {
-    return false;
+bool Condition::checkCondition() {
+    if (attr.find("has") != attr.end()) {
+        if (attr["has"] == "yes" && owner->getObject(attr["object"], ITEM) != nullptr)
+            return true;
+        else if (attr["has"] == "no" && owner->getObject(attr["object"], ITEM) == nullptr)
+            return true;
+        return false;
+    } else {
+        if (object->getInfo("status") == attr["status"])
+            return true;
+        return false;
+    }
 }
 
 Trigger::Trigger(rapidxml::xml_node<> *root) : hasTriggered(false), hasInitialized(false) {
@@ -65,6 +75,18 @@ void Trigger::initTrigger(std::unordered_map<std::string, std::shared_ptr<GameOb
     }
 }
 
-void Trigger::fire() {
+bool Trigger::checkTrigger(std::string cmd) {
+    if (attr["type"] == "single" && hasTriggered)
+        return false;
 
+    bool ret = cmd == attr["command"];
+    for (auto i : conditions)
+        ret &= i->checkCondition();
+    return ret;
+}
+
+void Trigger::fire() {
+    hasTriggered = true;
+    for (auto s : prints)
+        std::cout << s << std::endl;
 }

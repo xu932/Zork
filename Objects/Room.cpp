@@ -45,3 +45,19 @@ void Room::init() {
     std::string description = this->getInfo("description");
     std::cout << description << std::endl;
 }
+
+std::shared_ptr<Trigger> Room::checkTrigger(std::string cmd) {
+    for (auto i : triggers) {
+        if (i->checkTrigger(cmd))
+            return i;
+    }
+
+    for (auto i : objects) {
+        auto temp = i.second->checkTrigger(cmd);
+        if (temp != nullptr)    return temp;
+    }
+
+    return nullptr;
+}
+
+

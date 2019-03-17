@@ -25,6 +25,8 @@ public:
                               std::shared_ptr<GameObject> inventory);
 
     void init();
+
+    virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
 };
 
 

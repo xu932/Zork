@@ -22,14 +22,27 @@ Container::Container(rapidxml::xml_node<> *root, std::vector<std::string>& items
     }
 }
 
+Container::~Container() {}
+
 void Container::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
-                        std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
-                        std::shared_ptr<GameObject> inventory) {
+                             std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                             std::shared_ptr<GameObject> inventory) {
     for (auto i : triggers) {
         if (!(i->hasInitialized))
             i->initTrigger(items, containers, inventory);
     }
 }
 
-Container::~Container() {}
+std::shared_ptr<Trigger> Container::checkTrigger(std::string cmd) {
+    for (auto i : triggers) {
+        if (i->checkTrigger(cmd))
+            return i;
+    }
 
+    for (auto i : objects) {
+        auto temp = i.second->checkTrigger(cmd);
+        if (temp != nullptr)    return temp;
+    }
+
+    return nullptr;
+}
