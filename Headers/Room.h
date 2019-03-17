@@ -15,7 +15,7 @@ private:
 
     void addBorder(rapidxml::xml_node<>* root);
 public:
-    Room(rapidxml::xml_node<>* root, std::unordered_map<std::string, std::vector<std::string>>& everything);
+    Room(rapidxml::xml_node<>* root, std::vector<std::string>& everything);
     virtual ~Room();
 };
 
