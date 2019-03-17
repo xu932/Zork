@@ -40,3 +40,9 @@ std::shared_ptr<GameObject> GameObject::getObject(std::string key, Type type) {
 void GameObject::addTrigger(std::shared_ptr <Trigger> trig) {
     triggers.push_back(trig);
 }
+
+void GameObject::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                          std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                          std::shared_ptr<GameObject> inventory) {
+    return;
+}

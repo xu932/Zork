@@ -21,7 +21,7 @@ enum Type {
 };
 
 class GameObject {
-private:
+protected:
     std::unordered_map<std::string, std::string> attr;
     std::unordered_map<std::string, std::shared_ptr<GameObject>> objects;
     std::vector<std::shared_ptr<Trigger>> triggers;
@@ -40,6 +40,9 @@ public:
     virtual std::shared_ptr<GameObject> getObject(std::string key, Type type);
 
     virtual void addTrigger(std::shared_ptr<Trigger> trig);
+    virtual void initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
+                              std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
+                              std::shared_ptr<GameObject> inventory);
 };
 
 #endif //ZORK_GAMEOBJECT_H
