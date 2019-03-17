@@ -6,6 +6,7 @@
 
 Creature::Creature(rapidxml::xml_node<>* root) : GameObject(CREATURE), attack(nullptr) {
     for (auto node = root->first_node(); node; node = node->next_sibling()) {
+        std::string name(node->name());
         if (name == "vulnerability") {
             vulner.insert(std::string(node->value()));
         } else if (name == "attack") {
