@@ -41,3 +41,17 @@ int readCommand(std::string command, std::vector<std::string>& parse) {
     } else
         return 0;
 }
+
+int readAction(std::string action, std::vector<std::string>& parse) {
+    parseString(action, parse);
+    int size = parse.size();
+    if (size == 4 && parse[0] == "Add" && parse[2] == "to")
+        return 1;
+    else if (size == 2 && parse[0] == "Delete")
+        return 2;
+    else if (size == 4 && parse[0] == "Update" && parse[2] == "to")
+        return 3;
+    else if (action == "Game Over")
+        return 4;
+    return 0;
+}

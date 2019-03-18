@@ -27,14 +27,20 @@ Map::Map(std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>>& el
         std::shared_ptr<Item> item = std::make_shared<Item>(i);
         temp = std::dynamic_pointer_cast<GameObject>(item);
         std::string key = temp->getInfo("name");
-        if (key != "[ERROR]")  objects[ITEM][key] = temp;
+        if (key != "[ERROR]") {
+            objects[ITEM][key] = temp;
+            megaObjects[key] = temp;
+        }
     }
 
     for (auto i : elements["creature"]) {
         std::shared_ptr<Creature> creature = std::make_shared<Creature>(i);
         temp = std::dynamic_pointer_cast<GameObject>(creature);
         std::string key = temp->getInfo("name");
-        if (key != "[ERROR]")  objects[CREATURE][key] = temp;
+        if (key != "[ERROR]") {
+            objects[CREATURE][key] = temp;
+            megaObjects[key] = temp;
+        }
     }
 
     for (auto i : elements["container"]) {
@@ -44,7 +50,10 @@ Map::Map(std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>>& el
             cont->addObject(objects[ITEM][j]);
         temp = std::dynamic_pointer_cast<GameObject>(cont);
         std::string key = temp->getInfo("name");
-        if (key != "[ERROR]")  objects[CONTAINER][key] = temp;
+        if (key != "[ERROR]") {
+            objects[CONTAINER][key] = temp;
+            megaObjects[key] = temp;
+        }
     }
 
     for (auto i : elements["room"]) {
@@ -60,7 +69,10 @@ Map::Map(std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>>& el
 
         temp = std::dynamic_pointer_cast<GameObject>(room);
         std::string key = temp->getInfo("name");
-        if (key != "[ERROR]")   objects[ROOM][key] = temp;
+        if (key != "[ERROR]") {
+            objects[ROOM][key] = temp;
+            megaObjects[key] = temp;
+        }
     }
 }
 
@@ -100,16 +112,36 @@ std::shared_ptr<Room> Map::getRoom(std::string key) {
 
 void Map::initTriggers(std::shared_ptr<Container> inventory) {
     auto temp = std::dynamic_pointer_cast<GameObject>(inventory);
-    for (auto i : objects[ITEM])
-        i.second->initTriggers(objects[ITEM], objects[CONTAINER], temp);
-    for (auto i : objects[CREATURE])
-        i.second->initTriggers(objects[ITEM], objects[CONTAINER], temp);
-    for (auto i : objects[CONTAINER])
-        i.second->initTriggers(objects[ITEM], objects[CONTAINER], temp);
-    for (auto i : objects[ROOM])
+    for (auto i : megaObjects)
         i.second->initTriggers(objects[ITEM], objects[CONTAINER], temp);
 }
 
+void Map::executeAction(std::string action) {
+    std::vector<std::string> parse;
+    int type = readAction(action, parse);
+    if (type == 1) {
+        megaObjects[parse[3]]->addObject(megaObjects[parse[1]]);
+    } else if (type == 2) {
+        if (megaObjects[parse[1]]->type == ROOM) {
+            std::shared_ptr<Room> temp;
+            for (auto i : objects[ROOM]) {
+                temp = std::dynamic_pointer_cast<Room>(i.second);
+                temp->deleteBorder(parse[1]);
+            }
+        } else {
+            megaObjects[parse[1]]->deleted = true;
+            for (auto i : megaObjects) {
+                if (i.second->getObject(parse[1]) != nullptr)
+                    i.second->deleteObject(parse[1]);
+            }
+        }
+    } else if (type == 3) {
+        megaObjects[parse[1]]->addInfo("status", parse[3]);
+    } else if (type == 4) {
+        std::cout << "Victory" << std::endl;
+        running = false;
+    }
+}
 
 void Map::print() {
     for (auto i : objects[ITEM]) {

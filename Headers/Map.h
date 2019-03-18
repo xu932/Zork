@@ -9,11 +9,13 @@
 #include "Creature.h"
 #include "Container.h"
 #include "Room.h"
+#include "UtilityFunctions.h"
 
 class Map {
 private:
     bool running;
     std::unordered_map<Type, std::unordered_map<std::string, std::shared_ptr<GameObject>>> objects;
+    std::unordered_map<std::string, std::shared_ptr<GameObject>> megaObjects;
     std::shared_ptr<GameObject> getObject(std::string key);
 public:
     Map(std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>>& elements);
@@ -27,6 +29,8 @@ public:
     std::shared_ptr<Room> getRoom(std::string key);
 
     void initTriggers(std::shared_ptr<Container> inventory);
+
+    void executeAction(std::string action);
 
     void print();
 };
