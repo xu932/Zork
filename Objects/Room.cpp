@@ -60,4 +60,11 @@ std::shared_ptr<Trigger> Room::checkTrigger(std::string cmd) {
     return nullptr;
 }
 
+void Room::deleteBorder(std::string room) {
+    for (auto i : borders) {
+        if (i.second == room)
+            borders.erase(i.first);
+    }
+}
+
 

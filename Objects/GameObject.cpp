@@ -18,9 +18,14 @@ std::string GameObject::getInfo(std::string key) {
     return "[ERROR]";
 }
 
-void GameObject::addObject(std::shared_ptr <GameObject> obj) {
+void GameObject::addObject(std::shared_ptr<GameObject> obj) {
+    obj->deleted = false;
     std::string name = obj->getInfo("name");
     objects[name] = obj;
+}
+
+void GameObject::deleteObject(std::string key) {
+    objects.erase(key);
 }
 
 std::shared_ptr<GameObject> GameObject::getObject(std::string key) {
@@ -28,7 +33,6 @@ std::shared_ptr<GameObject> GameObject::getObject(std::string key) {
         return objects[key];
     return nullptr;
 }
-
 
 std::shared_ptr<GameObject> GameObject::getObject(std::string key, Type type) {
     auto ret = this->getObject(key);

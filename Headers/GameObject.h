@@ -36,6 +36,7 @@ public:
     virtual std::string getInfo(std::string key);
 
     virtual void addObject(std::shared_ptr<GameObject> obj);
+    virtual void deleteObject(std::string key);
     virtual std::shared_ptr<GameObject> getObject(std::string key);
     virtual std::shared_ptr<GameObject> getObject(std::string key, Type type);
 
