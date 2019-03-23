@@ -157,7 +157,18 @@ void runZork(Map* map) {
             } else
                 std::cerr << "No such item in inventory" << std::endl;
         } else {                    // attack (creature) with (item)
-
+            auto item = inventory->getObject(parse[3]);
+            auto temp = current->getObject(parse[1]);
+            if (item != nullptr && temp != nullptr) {
+                auto creat = std::dynamic_pointer_cast<Creature>(temp);
+                if (creat->attackWith(temp)) {
+                    for (auto s : (creat->attack)->actions)
+                        map->executeAction(s);
+                }
+            } else if (item == nullptr)
+                std::cerr << "No such item in inventory" << std::endl;
+            else
+                std::cerr << "No such creature in the current room" << std::endl;
         }
     }
 
