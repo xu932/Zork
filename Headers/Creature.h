@@ -15,8 +15,9 @@
 class Creature : public GameObject {
 private:
     std::unordered_set<std::string> vulner;
-    Attack *attack;
 public:
+    Attack *attack;
+
     Creature(rapidxml::xml_node<>* root);
     virtual ~Creature();
 
@@ -24,6 +25,7 @@ public:
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
+    virtual bool attack(std::shared_ptr<GameObject> item);
 
 };
 

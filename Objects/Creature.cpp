@@ -42,3 +42,14 @@ std::shared_ptr<Trigger> Creature::checkTrigger(std::string cmd) {
     return nullptr;
 }
 
+bool Creature::attack(std::shared_ptr<GameObject> item) {
+    bool ret = vulner.find(item->getInfo("name")) != vulner.end();
+    for (auto i : attack->conditions) {
+        ret &= (item->getInfo("name") == i["object"]) && (item->getInfo("status") == i["status"]);
+    }
+    if (ret) {
+        for (auto i : attack->prints)
+            std::cout << i << std::endl;
+    }
+    return ret;
+}
