@@ -30,6 +30,7 @@ std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>> extractEleme
 void runZork(Map* map) {
     std::shared_ptr<Container> inventory = std::make_shared<Container>();   // player's inventory
     inventory->addInfo("name", "Player");
+    inventory->open = true;
 
     std::string command;                                                    // for user input command
     std::vector<std::string> parse;                                         // for parsed command
@@ -88,7 +89,7 @@ void runZork(Map* map) {
         }
 
         // execute user command
-        if (type == 1) {
+        if (type == 1) {            // n s e w
             std::string next = current->move(direction(parse[0]));
             if (next == "[ERROR]")
                 std::cerr << "Can't go that way." << std::endl;
@@ -96,15 +97,34 @@ void runZork(Map* map) {
                 current = map->getRoom(next);
                 current->init();
             }
-        } else if (type == 2) {
+        } else if (type == 2) {     // i
             inventory->print();
-        } else if (type == 3) {
+        } else if (type == 3) {     // take (item)
             auto obj = current->getObject(parse[1]);
             if (obj != nullptr) {
+                current->deleteObject(parse[1]);
                 inventory->addObject(obj);
                 std::cout << "Item " << obj->getInfo("name") << " added to inventory" << std::endl;
             } else
                 std::cout << "Error" << std::endl;
+        } else if (type == 4) {     // open (container)
+            auto temp = std::dynamic_pointer_cast<Container>(current->getObject(parse[1]));
+            if (temp != nullptr) {
+                temp->open = true;
+                temp->print2();
+            } else
+                std::cout << "No such container" << std::endl;
+        } else if (type == 5) {     // open exit
+            if (current->getInfo("type") == "exit") {
+                map->running = true;
+                std::cout << "Game over" << std::endl;
+            }
+        } else if (type == 6) {     // read (item)
+            auto temp = inventory->getObject(parse[1]);
+            if (temp != nullptr)
+                temp->print();
+            else
+                std::cout << "No such item in inventory" << std::endl;
         }
     }
 
