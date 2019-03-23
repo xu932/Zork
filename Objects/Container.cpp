@@ -34,11 +34,8 @@ void Container::initTriggers(std::unordered_map<std::string, std::shared_ptr<Gam
 }
 
 std::shared_ptr<GameObject> Container::getObject(std::string key) {
-    if (open && objects.find(key) != objects.end()) {
-        auto ret = objects[key];
-        objects.erase(key);
-        return ret;
-    }
+    if (open && objects.find(key) != objects.end())
+        return objects[key];
     return nullptr;
 }
 
@@ -67,6 +64,22 @@ void Container::print() {
         std::cout << "empty" << std::endl;
     else {
         std::cout << items[0];
+        for (int i = 1; i < items.size(); i++)
+            std::cout << ", " << items[i];
+        std::cout << std::endl;
+    }
+}
+
+void Container::print2() {
+    std::vector<std::string> items;
+    for (auto i : objects) {
+        if (i.second->type == ITEM)
+            items.push_back(i.first);
+    }
+    if (items.size() == 0)
+        std::cout << attr["name"] << " is empty." << std::endl;
+    else {
+        std::cout << attr["name"] << " contains " << items[0];
         for (int i = 1; i < items.size(); i++)
             std::cout << ", " << items[i];
         std::cout << std::endl;

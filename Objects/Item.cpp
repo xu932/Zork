@@ -46,4 +46,11 @@ std::shared_ptr<Trigger> Item::checkTrigger(std::string cmd) {
     return nullptr;
 }
 
+void Item::print() {
+    if (attr.find("writing") != attr.end())
+        std::cout << attr["writing"] << std::endl;
+    else
+        std::cout << "Nothing written." << std::endl;
+}
+
 

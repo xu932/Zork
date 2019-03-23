@@ -13,11 +13,11 @@
 
 class Map {
 private:
-    bool running;
     std::unordered_map<Type, std::unordered_map<std::string, std::shared_ptr<GameObject>>> objects;
     std::unordered_map<std::string, std::shared_ptr<GameObject>> megaObjects;
     std::shared_ptr<GameObject> getObject(std::string key);
 public:
+    bool running;
     Map(std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>>& elements);
     virtual ~Map();
 

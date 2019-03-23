@@ -26,6 +26,9 @@ public:
     virtual std::shared_ptr<GameObject> getObject(std::string key);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
     virtual void print();
+
+    virtual void print2();
+
 };
 
 

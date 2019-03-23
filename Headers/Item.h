@@ -24,6 +24,7 @@ public:
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
 
     void turnon();
+    virtual void print();
 };
 
 

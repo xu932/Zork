@@ -43,14 +43,15 @@ void Room::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObje
 std::shared_ptr<GameObject> Room::getObject(std::string key) {
     if (objects.find(key) != objects.end()) {
         auto ret = objects[key];
-        objects.erase(key);
         return ret;
     } else {
         for (auto i : objects) {
             if (i.second->type == CONTAINER) {
                 auto ret = i.second->getObject(key);
-                if (ret != nullptr)
+                if (ret != nullptr) {
+                    i.second->deleteObject(key);
                     return ret;
+                }
             }
         }
         return nullptr;
