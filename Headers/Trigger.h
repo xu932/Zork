@@ -24,6 +24,7 @@ public:
 
     void setOwner(std::shared_ptr<GameObject> own);
     void setObject(std::shared_ptr<GameObject> obj);
+    void clearCondition();
     std::string getInfo(std::string key);
     bool checkCondition();
 };
@@ -47,6 +48,7 @@ public:
     virtual void initTrigger(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
                       std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                       std::shared_ptr<GameObject> inventory);
+    virtual void uninitTrigger();
 
     virtual bool checkTrigger(std::string cmd);
     virtual void fire();

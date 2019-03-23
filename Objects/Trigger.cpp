@@ -26,6 +26,11 @@ void Condition::setObject(std::shared_ptr<GameObject> obj) {
     object = obj;
 }
 
+void Condition::clearCondition() {
+    owner = nullptr;
+    object = nullptr;
+}
+
 bool Condition::checkCondition() {
     if (attr.find("has") != attr.end()) {
         if (attr["has"] == "yes" && owner->hasObject(attr["object"]))
@@ -75,6 +80,13 @@ void Trigger::initTrigger(std::unordered_map<std::string, std::shared_ptr<GameOb
             i->setOwner(inventory);
         else if (owner != "[ERROR]")
             i->setOwner(containers[owner]);
+    }
+}
+
+void Trigger::uninitTrigger() {
+    hasInitialized = false;
+    for (auto i : conditions) {
+        i->clearCondition();
     }
 }
 

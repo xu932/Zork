@@ -40,6 +40,13 @@ void Room::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObje
     }
 }
 
+void Room::uninitTriggers() {
+    for (auto i : triggers) {
+        if (i->hasInitialized)
+            i->uninitTrigger();
+    }
+}
+
 std::shared_ptr<GameObject> Room::getObject(std::string key) {
     if (objects.find(key) != objects.end()) {
         auto ret = objects[key];

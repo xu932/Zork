@@ -23,6 +23,7 @@ public:
     virtual void initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
+    virtual void uninitTriggers();
     virtual std::shared_ptr<GameObject> getObject(std::string key);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
     virtual void print();

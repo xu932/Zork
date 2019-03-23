@@ -55,6 +55,8 @@ void GameObject::initTriggers(std::unordered_map<std::string, std::shared_ptr<Ga
     return;
 }
 
+void GameObject::uninitTriggers() {}
+
 std::shared_ptr<Trigger> GameObject::checkTrigger(std::string cmd) {
     return nullptr;
 }

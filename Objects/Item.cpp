@@ -38,6 +38,13 @@ void Item::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObje
     }
 }
 
+void Item::uninitTriggers() {
+    for (auto i : triggers) {
+        if (i->hasInitialized)
+            i->uninitTrigger();
+    }
+}
+
 std::shared_ptr<Trigger> Item::checkTrigger(std::string cmd) {
     for (auto i : triggers) {
         if (i->checkTrigger(cmd))

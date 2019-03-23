@@ -33,6 +33,13 @@ void Container::initTriggers(std::unordered_map<std::string, std::shared_ptr<Gam
     }
 }
 
+void Container::uninitTriggers() {
+    for (auto i : triggers) {
+        if (i->hasInitialized)
+            i->uninitTrigger();
+    }
+}
+
 std::shared_ptr<GameObject> Container::getObject(std::string key) {
     if (open && objects.find(key) != objects.end())
         return objects[key];
