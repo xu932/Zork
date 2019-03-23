@@ -144,6 +144,20 @@ void runZork(Map* map) {
                 std::cerr << "No such item in inventory" << std::endl;
             else
                 std::cerr << "No such container in this room" << std::endl;
+        } else if (type == 9) {     // turn on (item)
+            auto temp = inventory->getObject(parse[2]);
+            if (temp != nullptr) {
+                auto item = std::dynamic_pointer_cast<Item>(temp);
+                std::cout << "You activated the " << item->getInfo("name") << std::endl;
+                item->turnon();
+                if (item->turn_on.find("action") != item->turn_on.end()) {
+                    for (auto s : item->turn_on["action"])
+                        map->executeAction(s);
+                }
+            } else
+                std::cerr << "No such item in inventory" << std::endl;
+        } else {                    // attack (creature) with (item)
+
         }
     }
 
