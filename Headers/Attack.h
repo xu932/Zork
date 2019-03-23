@@ -12,11 +12,10 @@
 #include "rapidxml.hpp"
 
 class Attack {
-private:
+public:
     std::vector<std::unordered_map<std::string, std::string>> conditions;
     std::vector<std::string> prints;
     std::vector<std::string> actions;
-public:
     Attack(rapidxml::xml_node<>* root);
     virtual ~Attack();
 };
