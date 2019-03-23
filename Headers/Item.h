@@ -10,11 +10,11 @@
 
 class Item : public GameObject{
 private:
-    std::unordered_map<std::string, std::vector<std::string>> turn_on;
-
     virtual void addTurnOn(rapidxml::xml_node<>* root);
 
 public:
+    std::unordered_map<std::string, std::vector<std::string>> turn_on;
+
     Item(rapidxml::xml_node<>* root);
     virtual ~Item();
 

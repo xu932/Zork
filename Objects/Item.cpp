@@ -54,3 +54,9 @@ void Item::print() {
 }
 
 
+void Item::turnon() {
+    if (turn_on.find("print") != turn_on.end()) {
+        for (auto i : turn_on["print"])
+            std::cout << i << std::endl;
+    }
+}
