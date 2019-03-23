@@ -25,7 +25,7 @@ public:
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
-    virtual bool attack(std::shared_ptr<GameObject> item);
+    virtual bool attackWith(std::shared_ptr<GameObject> item);
 
 };
 
