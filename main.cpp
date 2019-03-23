@@ -106,14 +106,14 @@ void runZork(Map* map) {
                 inventory->addObject(obj);
                 std::cout << "Item " << obj->getInfo("name") << " added to inventory" << std::endl;
             } else
-                std::cout << "Error" << std::endl;
+                std::cerr << "Error" << std::endl;
         } else if (type == 4) {     // open (container)
             auto temp = std::dynamic_pointer_cast<Container>(current->getObject(parse[1]));
             if (temp != nullptr) {
                 temp->open = true;
                 temp->print2();
             } else
-                std::cout << "No such container" << std::endl;
+                std::cerr << "No such container" << std::endl;
         } else if (type == 5) {     // open exit
             if (current->getInfo("type") == "exit") {
                 map->running = true;
@@ -124,15 +124,26 @@ void runZork(Map* map) {
             if (temp != nullptr)
                 temp->print();
             else
-                std::cout << "No such item in inventory" << std::endl;
+                std::cerr << "No such item in inventory" << std::endl;
         } else if (type == 7) {     // drop (item)
             auto temp = inventory->getObject(parse[1]);
             if (temp != nullptr) {
                 inventory->deleteObject(parse[1]);
                 current->addObject(temp);
-                std::cout << temp->getInfo("name") << " dropped" << std::endl;
+                std::cerr << temp->getInfo("name") << " dropped" << std::endl;
             } else
-                std::cout << "No such item in inventory" << std::endl;
+                std::cerr << "No such item in inventory" << std::endl;
+        } else if (type == 8) {     // put (item) in (container)
+            auto item = inventory->getObject(parse[1]);
+            auto cont = current->getObject(parse[3]);
+            if (item != nullptr && cont != nullptr) {
+                inventory->deleteObject(parse[1]);
+                cont->addObject(item);
+                std::cout << "Item " << item->getInfo("name") << " added to " << cont->getInfo("name") << "." << std::endl;
+            } else if (item == nullptr)
+                std::cerr << "No such item in inventory" << std::endl;
+            else
+                std::cerr << "No such container in this room" << std::endl;
         }
     }
 
