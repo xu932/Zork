@@ -13,5 +13,5 @@
 void parseString(std::string str, std::vector<std::string>& parse);
 int readCommand(std::string command, std::vector<std::string>& parse);
 int readAction(std::string action, std::vector<std::string>& parse);
-
+std::string direction(std::string dir);
 #endif //ZORK_UTILITYFUNCTIONS_H

@@ -55,3 +55,10 @@ int readAction(std::string action, std::vector<std::string>& parse) {
         return 4;
     return 0;
 }
+
+std::string direction(std::string dir) {
+    if (dir == "n")         return "north";
+    else if (dir == "s")    return "south";
+    else if (dir == "w")    return "west";
+    else                    return "east";
+}

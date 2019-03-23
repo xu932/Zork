@@ -8,10 +8,9 @@ void Room::addBorder(rapidxml::xml_node<> *root) {
     std::string dir(root->first_node("direction")->value());
     std::string rm(root->first_node("name")->value());
     borders[dir] = rm;
-    n_border++;
 }
 
-Room::Room(rapidxml::xml_node<> *root, std::unordered_map<std::string, std::vector<std::string>>& everything) : GameObject(ROOM), n_border(0) {
+Room::Room(rapidxml::xml_node<> *root, std::unordered_map<std::string, std::vector<std::string>>& everything) : GameObject(ROOM) {
     everything["item"] = std::vector<std::string>();
     everything["creature"] = std::vector<std::string>();
     everything["container"] = std::vector<std::string>();
@@ -41,6 +40,23 @@ void Room::initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObje
     }
 }
 
+std::shared_ptr<GameObject> Room::getObject(std::string key) {
+    if (objects.find(key) != objects.end()) {
+        auto ret = objects[key];
+        objects.erase(key);
+        return ret;
+    } else {
+        for (auto i : objects) {
+            if (i.second->type == CONTAINER) {
+                auto ret = i.second->getObject(key);
+                if (ret != nullptr)
+                    return ret;
+            }
+        }
+        return nullptr;
+    }
+}
+
 void Room::init() {
     std::string description = this->getInfo("description");
     std::cout << description << std::endl;
@@ -65,6 +81,12 @@ void Room::deleteBorder(std::string room) {
         if (i.second == room)
             borders.erase(i.first);
     }
+}
+
+std::string Room::move(std::string direction) {
+    if (borders.find(direction) != borders.end())
+        return borders[direction];
+    return "[ERROR]";
 }
 
 

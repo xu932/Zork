@@ -14,6 +14,8 @@ class Container : public GameObject {
 private:
     std::unordered_set<std::string> accepts;
 public:
+    bool open;
+
     Container();
     Container(rapidxml::xml_node<>* root, std::vector<std::string>& items);
     virtual ~Container();
@@ -21,7 +23,9 @@ public:
     virtual void initTriggers(std::unordered_map<std::string, std::shared_ptr<GameObject>>& items,
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
+    virtual std::shared_ptr<GameObject> getObject(std::string key);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
+    virtual void print();
 };
 
 

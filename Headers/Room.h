@@ -12,7 +12,6 @@
 
 class Room : public GameObject {
 private:
-    int n_border;
     std::unordered_map<std::string, std::string> borders;
 
     void addBorder(rapidxml::xml_node<>* root);
@@ -24,9 +23,12 @@ public:
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
 
+    virtual std::shared_ptr<GameObject> getObject(std::string key);
+
     void init();
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
     virtual void deleteBorder(std::string room);
+    virtual std::string move(std::string direction);
 };
 
 

@@ -29,6 +29,8 @@ std::unordered_map<std::string, std::vector<rapidxml::xml_node<>*>> extractEleme
 
 void runZork(Map* map) {
     std::shared_ptr<Container> inventory = std::make_shared<Container>();   // player's inventory
+    inventory->addInfo("name", "Player");
+
     std::string command;                                                    // for user input command
     std::vector<std::string> parse;                                         // for parsed command
     int type;                                                               // to decode which command it is
@@ -39,6 +41,10 @@ void runZork(Map* map) {
     current->init();
 
     while (map->isRunning()) {
+        parse.clear();
+        command = "";
+
+        // check trigger before do anything
         auto trig = current->checkTrigger("");
         if (trig != nullptr) {
             trig->fire();
@@ -55,6 +61,7 @@ void runZork(Map* map) {
             continue;
         }
 
+        // get user input command
         type = 0;
         do {
             std::getline(std::cin, command);
@@ -63,6 +70,7 @@ void runZork(Map* map) {
                 std::cerr << "Error" << std::endl;
         } while (type == 0);
 
+        // check if command triggers any trigger
         trig = current->checkTrigger(command);
         if (trig != nullptr) {
             trig->fire();
@@ -77,6 +85,26 @@ void runZork(Map* map) {
             for (auto s : trig->actions)
                 map->executeAction(s);
             continue;
+        }
+
+        // execute user command
+        if (type == 1) {
+            std::string next = current->move(direction(parse[0]));
+            if (next == "[ERROR]")
+                std::cerr << "Can't go that way." << std::endl;
+            else {
+                current = map->getRoom(next);
+                current->init();
+            }
+        } else if (type == 2) {
+            inventory->print();
+        } else if (type == 3) {
+            auto obj = current->getObject(parse[1]);
+            if (obj != nullptr) {
+                inventory->addObject(obj);
+                std::cout << "Item " << obj->getInfo("name") << " added to inventory" << std::endl;
+            } else
+                std::cout << "Error" << std::endl;
         }
     }
 

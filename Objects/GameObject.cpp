@@ -28,6 +28,10 @@ void GameObject::deleteObject(std::string key) {
     objects.erase(key);
 }
 
+bool GameObject::hasObject(std::string key) {
+    return objects.find(key) != objects.end();
+}
+
 std::shared_ptr<GameObject> GameObject::getObject(std::string key) {
     if (objects.find(key) != objects.end())
         return objects[key];
@@ -53,4 +57,8 @@ void GameObject::initTriggers(std::unordered_map<std::string, std::shared_ptr<Ga
 
 std::shared_ptr<Trigger> GameObject::checkTrigger(std::string cmd) {
     return nullptr;
+}
+
+void GameObject::print() {
+    std::cout << type << " " << attr["name"] << std::endl;
 }

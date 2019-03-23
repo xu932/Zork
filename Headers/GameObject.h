@@ -37,6 +37,7 @@ public:
 
     virtual void addObject(std::shared_ptr<GameObject> obj);
     virtual void deleteObject(std::string key);
+    virtual bool hasObject(std::string key);
     virtual std::shared_ptr<GameObject> getObject(std::string key);
     virtual std::shared_ptr<GameObject> getObject(std::string key, Type type);
 
@@ -45,6 +46,8 @@ public:
                               std::unordered_map<std::string, std::shared_ptr<GameObject>>& containers,
                               std::shared_ptr<GameObject> inventory);
     virtual std::shared_ptr<Trigger> checkTrigger(std::string cmd);
+
+    virtual void print();
 };
 
 #endif //ZORK_GAMEOBJECT_H
