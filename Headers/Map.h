@@ -29,6 +29,7 @@ public:
     std::shared_ptr<Room> getRoom(std::string key);
 
     void initTriggers(std::shared_ptr<Container> inventory);
+    void uninitTriggers();
 
     void executeAction(std::string action);
 

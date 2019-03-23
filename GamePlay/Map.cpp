@@ -116,6 +116,11 @@ void Map::initTriggers(std::shared_ptr<Container> inventory) {
         i.second->initTriggers(objects[ITEM], objects[CONTAINER], temp);
 }
 
+void Map::uninitTriggers() {
+    for (auto i : megaObjects)
+        i.second->uninitTriggers();
+}
+
 void Map::executeAction(std::string action) {
     std::vector<std::string> parse;
     int type = readAction(action, parse);

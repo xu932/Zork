@@ -173,7 +173,7 @@ void runZork(Map* map) {
                 std::cerr << "No such creature in the current room" << std::endl;
         }
     }
-
+    map->uninitTriggers();
 }
 
 int main(int argc, char ** argv) {
