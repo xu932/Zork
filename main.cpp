@@ -65,6 +65,7 @@ void runZork(Map* map) {
         // get user input command
         type = 0;
         do {
+            std::cout << ">> ";
             std::getline(std::cin, command);
             type = readCommand(command, parse);
             if (type == 0)
@@ -101,7 +102,7 @@ void runZork(Map* map) {
             inventory->print();
         } else if (type == 3) {     // take (item)
             auto obj = current->getObject(parse[1]);
-            if (obj != nullptr) {
+            if (obj != nullptr && obj->type == ITEM) {
                 current->deleteObject(parse[1]);
                 inventory->addObject(obj);
                 std::cout << "Item " << obj->getInfo("name") << " added to inventory" << std::endl;
