@@ -116,7 +116,7 @@ void runZork(Map* map) {
                 std::cerr << "No such container" << std::endl;
         } else if (type == 5) {     // open exit
             if (current->getInfo("type") == "exit") {
-                map->running = true;
+                map->running = false;
                 std::cout << "Game over" << std::endl;
             }
         } else if (type == 6) {     // read (item)
@@ -161,10 +161,11 @@ void runZork(Map* map) {
             auto temp = current->getObject(parse[1]);
             if (item != nullptr && temp != nullptr) {
                 auto creat = std::dynamic_pointer_cast<Creature>(temp);
-                if (creat->attackWith(temp)) {
+                if (creat->attackWith(item)) {
                     for (auto s : (creat->attack)->actions)
                         map->executeAction(s);
-                }
+                } else
+                    std::cerr << "Error: not effective on " << creat->getInfo("name") << std::endl;
             } else if (item == nullptr)
                 std::cerr << "No such item in inventory" << std::endl;
             else
