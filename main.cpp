@@ -125,6 +125,14 @@ void runZork(Map* map) {
                 temp->print();
             else
                 std::cout << "No such item in inventory" << std::endl;
+        } else if (type == 7) {     // drop (item)
+            auto temp = inventory->getObject(parse[1]);
+            if (temp != nullptr) {
+                inventory->deleteObject(parse[1]);
+                current->addObject(temp);
+                std::cout << temp->getInfo("name") << " dropped" << std::endl;
+            } else
+                std::cout << "No such item in inventory" << std::endl;
         }
     }
 
