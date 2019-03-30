@@ -31,7 +31,7 @@ public:
     void initTriggers(std::shared_ptr<Container> inventory);
     void uninitTriggers();
 
-    void executeAction(std::string action);
+    std::shared_ptr<Room> executeAction(std::string action, std::shared_ptr<Container> inventory, std::shared_ptr<Room> current);
 
     void print();
 };
