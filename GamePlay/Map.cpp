@@ -176,7 +176,8 @@ std::shared_ptr<Room> Map::executeAction(std::string action, std::shared_ptr<Con
             if (current->getInfo("type") == "exit") {
                 this->running = false;
                 std::cout << "Game over" << std::endl;
-            }
+            } else 
+                std::cerr << "This is not an exit" << std::endl;
         } else if (type == 6) {     // read (item)
             auto temp = inventory->getObject(parse[1]);
             if (temp != nullptr)
