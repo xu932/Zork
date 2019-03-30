@@ -221,8 +221,10 @@ std::shared_ptr<Room> Map::executeAction(std::string action, std::shared_ptr<Con
             if (item != nullptr && temp != nullptr) {
                 auto creat = std::dynamic_pointer_cast<Creature>(temp);
                 if (creat->attackWith(item)) {
-                    for (auto s : (creat->attack)->actions)
-                        current = this->executeAction(s, inventory, current);
+                    if (creat->attack) {
+                        for (auto s : (creat->attack)->actions)
+                            current = this->executeAction(s, inventory, current);
+                    }
                 } else
                     std::cerr << "Error: not effective on " << creat->getInfo("name") << std::endl;
             } else if (item == nullptr)

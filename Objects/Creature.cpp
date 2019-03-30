@@ -51,13 +51,16 @@ std::shared_ptr<Trigger> Creature::checkTrigger(std::string cmd) {
 
 bool Creature::attackWith(std::shared_ptr<GameObject> item) {
     bool ret = vulner.find(item->getInfo("name")) != vulner.end();
-    for (auto i : attack->conditions) {
-        ret &= (item->getInfo("name") == i["object"]) && (item->getInfo("status") == i["status"]);
+    if (attack) {
+        for (auto i : attack->conditions)
+            ret &= (item->getInfo("name") == i["object"]) && (item->getInfo("status") == i["status"]);
     }
     if (ret) {
         std::cout << "You assult the " << attr["name"] << " with the " << item->getInfo("name") << std::endl;
-        for (auto i : attack->prints)
-            std::cout << i << std::endl;
+        if (attack) {
+            for (auto i : attack->prints)
+                std::cout << i << std::endl;
+        }
     }
     return ret;
 }
